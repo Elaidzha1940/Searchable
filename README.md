@@ -5,6 +5,9 @@ https://github.com/Elaidzha1940/Searchable/assets/64445918/98e05231-807d-4862-ad
 
 ``````````ruby
 
+import SwiftUI
+import Combine
+
 struct Searchable: View {
     @StateObject private var viewModel = SearchableViewModel()
     
