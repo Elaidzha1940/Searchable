@@ -13,7 +13,9 @@ import SwiftUI
 struct SearchableApp: App {
     var body: some Scene {
         WindowGroup {
-            Searchable()
+            NavigationStack {
+                Searchable()
+            }
         }
     }
 }
