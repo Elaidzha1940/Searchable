@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E4B678BF2B4C93F700A9D118 /* SearchableApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B678BE2B4C93F700A9D118 /* SearchableApp.swift */; };
-		E4B678C12B4C93F700A9D118 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B678C02B4C93F700A9D118 /* ContentView.swift */; };
+		E4B678C12B4C93F700A9D118 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B678C02B4C93F700A9D118 /* Searchable.swift */; };
 		E4B678C32B4C93F800A9D118 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4B678C22B4C93F800A9D118 /* Assets.xcassets */; };
 		E4B678C62B4C93F800A9D118 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4B678C52B4C93F800A9D118 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -16,7 +16,7 @@
 /* Begin PBXFileReference section */
 		E4B678BB2B4C93F700A9D118 /* Searchable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Searchable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B678BE2B4C93F700A9D118 /* SearchableApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableApp.swift; sourceTree = "<group>"; };
-		E4B678C02B4C93F700A9D118 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E4B678C02B4C93F700A9D118 /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
 		E4B678C22B4C93F800A9D118 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E4B678C52B4C93F800A9D118 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -52,7 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				E4B678BE2B4C93F700A9D118 /* SearchableApp.swift */,
-				E4B678C02B4C93F700A9D118 /* ContentView.swift */,
+				E4B678C02B4C93F700A9D118 /* Searchable.swift */,
 				E4B678C22B4C93F800A9D118 /* Assets.xcassets */,
 				E4B678C42B4C93F800A9D118 /* Preview Content */,
 			);
@@ -137,7 +137,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4B678C12B4C93F700A9D118 /* ContentView.swift in Sources */,
+				E4B678C12B4C93F700A9D118 /* Searchable.swift in Sources */,
 				E4B678BF2B4C93F700A9D118 /* SearchableApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,7 +197,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -254,7 +254,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

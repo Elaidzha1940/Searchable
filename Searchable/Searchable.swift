@@ -8,6 +8,7 @@
 //  */
 
 import SwiftUI
+import Combine
 
 struct Restaurant: Identifiable, Hashable {
     let id: String
@@ -24,7 +25,7 @@ final class RestaurantManager {
     func getAllRestaurants() async throws -> [Restaurant] {
         [
             Restaurant(id: "1", title: "Khinkali", cuisine: .georgian),
-            Restaurant(id: "2", title: "Syniki", cuisine: .russian),
+            Restaurant(id: "2", title: "Syrniki", cuisine: .russian),
             Restaurant(id: "3", title: "Lasania", cuisine: .italian),
             Restaurant(id: "4", title: "Ratatouille", cuisine: .french),
             Restaurant(id: "5", title: "Ramen", cuisine: .japanese),
@@ -35,7 +36,39 @@ final class RestaurantManager {
 @MainActor
 final class SearchableViewModel: ObservableObject {
     @Published private(set) var allRestaurants: [Restaurant] = []
+    @Published private(set) var filteredRestaurants: [Restaurant] = []
+    @Published var searchText: String = ""
     let manager = RestaurantManager()
+    private var cancellabales = Set<AnyCancellable>()
+    
+    var isSearching: Bool {
+        !searchText.isEmpty
+    }
+    
+    init() {
+        addSubscribers()
+    }
+    
+    private func addSubscribers() {
+        $searchText.debounce(for: 0.3, scheduler: DispatchQueue.main)
+            .sink { [weak self] searchText in
+                self?.filterRestaurants(searchText: searchText)
+            }
+            .store(in: &cancellabales)
+    }
+    
+    private func filterRestaurants(searchText: String) {
+        guard !searchText.isEmpty else {
+            filteredRestaurants = []
+            return
+        }
+        let search = searchText.lowercased()
+        filteredRestaurants = allRestaurants.filter({ restaurant in
+            let titleContainsSearch = restaurant.title.lowercased().contains(search)
+            let cuisineContainsSearch = restaurant.cuisine.rawValue.lowercased().contains(search)
+            return titleContainsSearch || cuisineContainsSearch
+        })
+    }
     
     func loadRestaurants() async {
         do {
@@ -53,12 +86,13 @@ struct Searchable: View {
         
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                ForEach(viewModel.allRestaurants) { restaurant in
+                ForEach(viewModel.isSearching ? viewModel.filteredRestaurants : viewModel.allRestaurants) { restaurant in
                     restaurantRow(restaurant: restaurant)
                 }
             }
+            .padding()
         }
-        .padding()
+        .searchable(text: $viewModel.searchText, placement: .automatic, prompt: "Search restaurants...")
         .navigationTitle("Restaurants")
         .task {
             await viewModel.loadRestaurants()
