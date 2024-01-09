@@ -84,12 +84,20 @@ final class SearchableViewModel: ObservableObject {
         }
         
         // Filter on search scope
-
-        
+        var restaurantsInScope = allRestaurants
+        switch currentsearchScope {
+        case .all:
+            break
+        case .cuisine(let option):
+            restaurantsInScope = allRestaurants.filter({ $0.cuisine == option })
+//            restaurantsInScope = allRestaurants.filter({ restaurant in
+//                return restaurant.cuisine == option
+//            })
+        }
         
         // Filter on search text
         let search = searchText.lowercased()
-        filteredRestaurants = allRestaurants.filter({ restaurant in
+        filteredRestaurants = restaurantsInScope.filter({ restaurant in
             let titleContainsSearch = restaurant.title.lowercased().contains(search)
             let cuisineContainsSearch = restaurant.cuisine.rawValue.lowercased().contains(search)
             return titleContainsSearch || cuisineContainsSearch
