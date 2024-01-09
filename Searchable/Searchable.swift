@@ -48,6 +48,10 @@ final class SearchableViewModel: ObservableObject {
         !searchText.isEmpty
     }
     
+    var showSearchSuggestions: Bool {
+        searchText.count < 3
+    }
+    
     enum SearchScopeOption: Hashable {
         case all
         case cuisine(option: CuisineOption)
@@ -90,9 +94,9 @@ final class SearchableViewModel: ObservableObject {
             break
         case .cuisine(let option):
             restaurantsInScope = allRestaurants.filter({ $0.cuisine == option })
-//            restaurantsInScope = allRestaurants.filter({ restaurant in
-//                return restaurant.cuisine == option
-//            })
+            //            restaurantsInScope = allRestaurants.filter({ restaurant in
+            //                return restaurant.cuisine == option
+            //            })
         }
         
         // Filter on search text
@@ -111,9 +115,9 @@ final class SearchableViewModel: ObservableObject {
             let allCuisines = Set(allRestaurants.map { $0.cuisine })
             allSearchScopes = [.all] + allCuisines.map({ SearchScopeOption.cuisine(option: $0) })
             
-//            allSearchScopes = [.all] + allCuisines.map({ option in
-//                SearchScopeOption.cuisine(option: option)
-//            })
+            //            allSearchScopes = [.all] + allCuisines.map({ option in
+            //                SearchScopeOption.cuisine(option: option)
+            //            })
             
         } catch {
             print(error)
@@ -121,6 +125,10 @@ final class SearchableViewModel: ObservableObject {
     }
     
     func getSearchSuggestions() -> [String] {
+        guard showSearchSuggestions else {
+            return []
+        }
+        
         var suggestions: [String] = []
         
         let search = searchText.lowercased()
@@ -143,9 +151,32 @@ final class SearchableViewModel: ObservableObject {
         suggestions.append(CuisineOption.italian.rawValue.capitalized)
         suggestions.append(CuisineOption.japanese.rawValue.capitalized)
         suggestions.append(CuisineOption.russian.rawValue.capitalized)
-
+        
         return suggestions
     }
+    
+    func getRestaurantSuggestions() -> [Restaurant] {
+        guard showSearchSuggestions else {
+            return []
+        }
+        
+        var suggestions: [Restaurant] = []
+        
+        let search = searchText.lowercased()
+        
+        if search.contains("fre") {
+            suggestions.append(contentsOf: allRestaurants.filter({ $0.cuisine == .french }))
+        }
+        if search.contains("jap") {
+            suggestions.append(contentsOf: allRestaurants.filter({ $0.cuisine == .japanese }))
+        }
+        if search.contains("geo") {
+            suggestions.append(contentsOf: allRestaurants.filter({ $0.cuisine == .georgian }))
+        }
+        
+        return suggestions
+    }
+}
 
 struct Searchable: View {
     @StateObject private var viewModel = SearchableViewModel()
@@ -155,7 +186,9 @@ struct Searchable: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 ForEach(viewModel.isSearching ? viewModel.filteredRestaurants : viewModel.allRestaurants) { restaurant in
-                    restaurantRow(restaurant: restaurant)
+                    NavigationLink(value: restaurant) {
+                        restaurantRow(restaurant: restaurant)
+                    }
                 }
             }
             .padding()
@@ -168,11 +201,23 @@ struct Searchable: View {
             }
         })
         .searchSuggestions {
+            ForEach(viewModel.getSearchSuggestions(), id: \.self) { suggestion in
+                Text(suggestion)
+                    .searchCompletion(suggestion)
+            }
             
+            ForEach(viewModel.getRestaurantSuggestions(), id: \.self) { suggestion in
+                NavigationLink(value: suggestion) {
+                    Text(suggestion.title)
+                }
+            }
         }
         .navigationTitle("Restaurants")
         .task {
             await viewModel.loadRestaurants()
+        }
+        .navigationDestination(for: Restaurant.self) { restaurant in
+            Text(restaurant.title.uppercased())
         }
     }
     
@@ -180,13 +225,16 @@ struct Searchable: View {
         VStack(alignment: .leading, spacing: 10) {
             Text(restaurant.title)
                 .font(.system(size: 20, weight: .bold, design: .rounded))
+                .foregroundStyle(.black)
             Text(restaurant.cuisine.rawValue.capitalized)
                 .font(.system(size: 15, weight: .semibold, design: .rounded))
+                .foregroundStyle(.black)
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.mint.opacity(0.6))
         .cornerRadius(15)
+        .tint(.black)
     }
 }
 
