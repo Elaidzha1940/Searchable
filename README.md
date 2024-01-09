@@ -72,3 +72,12 @@ struct Searchable: View {
             restaurantsInScope = allRestaurants.filter({ $0.cuisine == option })
         }
 `````````
+
+`````````ruby
+ .searchScopes($viewModel.searchScope, scopes: {
+            ForEach(viewModel.allSearchScopes, id: \.self) { scope in
+                Text(scope.title)
+                    .tag(scope)
+            }
+        })
+`````````
