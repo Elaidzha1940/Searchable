@@ -3,6 +3,17 @@ How to use Searchable, Search Suggestions, Search Scopes in SwiftUI.
 
 https://github.com/Elaidzha1940/Searchable/assets/64445918/98e05231-807d-4862-ad88-d738ff296db4
 
+````````````
+   // Filter on search text
+        let search = searchText.lowercased()
+        filteredRestaurants = restaurantsInScope.filter({ restaurant in
+            let titleContainsSearch = restaurant.title.lowercased().contains(search)
+            let cuisineContainsSearch = restaurant.cuisine.rawValue.lowercased().contains(search)
+            return titleContainsSearch || cuisineContainsSearch
+        })
+    }
+````````````
+
 ``````````ruby
 
 import SwiftUI
@@ -49,3 +60,15 @@ struct Searchable: View {
 }
 
 ``````````
+
+
+`````````
+  // Filter on search scope
+        var restaurantsInScope = allRestaurants
+        switch currentsearchScope {
+        case .all:
+            break
+        case .cuisine(let option):
+            restaurantsInScope = allRestaurants.filter({ $0.cuisine == option })
+        }
+`````````
