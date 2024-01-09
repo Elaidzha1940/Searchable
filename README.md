@@ -61,6 +61,7 @@ struct Searchable: View {
 
 ``````````
 
+https://github.com/Elaidzha1940/Searchable/assets/64445918/4ea802b9-85d4-40c6-bcad-ff9dc2a1fa1b
 
 `````````
   // Filter on search scope
