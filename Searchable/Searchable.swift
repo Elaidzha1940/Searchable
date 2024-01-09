@@ -119,7 +119,33 @@ final class SearchableViewModel: ObservableObject {
             print(error)
         }
     }
-}
+    
+    func getSearchSuggestions() -> [String] {
+        var suggestions: [String] = []
+        
+        let search = searchText.lowercased()
+        if search.contains("ra") {
+            suggestions.append("Ramen")
+        }
+        if search.contains("sy") {
+            suggestions.append("Syrniki")
+        }
+        if search.contains("la") {
+            suggestions.append("Lasania")
+        }
+        if search.contains("kh") {
+            suggestions.append("Khinkali")
+        }
+        suggestions.append("Food")
+        suggestions.append("Grocery")
+        
+        suggestions.append(CuisineOption.georgian.rawValue.capitalized)
+        suggestions.append(CuisineOption.italian.rawValue.capitalized)
+        suggestions.append(CuisineOption.japanese.rawValue.capitalized)
+        suggestions.append(CuisineOption.russian.rawValue.capitalized)
+
+        return suggestions
+    }
 
 struct Searchable: View {
     @StateObject private var viewModel = SearchableViewModel()
@@ -141,6 +167,9 @@ struct Searchable: View {
                     .tag(scope)
             }
         })
+        .searchSuggestions {
+            
+        }
         .navigationTitle("Restaurants")
         .task {
             await viewModel.loadRestaurants()
